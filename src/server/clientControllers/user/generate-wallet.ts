@@ -10,7 +10,7 @@ export async function getUserWallet(req: any, res: any) {
     const decodePrivateAddress: any = await verifyJWT(privatekey);
     console.log('PRivate decode : ', decodePrivateAddress);
     const smartAccount = await createSmartAccount({
-      private_address: privatekey,
+      private_address: decodePrivateAddress?.privateKey,
     });
     console.log({ smartAccount });
     const smartAccountAddress = await smartAccount.getAccountAddress();
