@@ -3,14 +3,14 @@ import { createSmartAccount } from '../web3-controller/createAccount';
 export async function getUserWallet(req: any, res: any) {
   try {
     console.log('check', req?.body);
-    const privatekey = req.body.privateKey;
+    const privatekey = req.body.decodePrivateKey;
 
     console.log('PRIVATE : ', privatekey);
     // Decode private address using JWT
     const decodePrivateAddress: any = await verifyJWT(privatekey);
     console.log('PRivate decode : ', decodePrivateAddress);
     const smartAccount = await createSmartAccount({
-      private_address: decodePrivateAddress?.privateKey,
+      private_address: decodePrivateAddress?.decodePrivateKey,
     });
     console.log({ smartAccount });
     const smartAccountAddress = await smartAccount.getAccountAddress();
