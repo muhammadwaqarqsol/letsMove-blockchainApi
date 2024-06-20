@@ -1,0 +1,13 @@
+{
+  "Parameters": {
+    "commands": [
+      "#!/bin/bash",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api && git stash'",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api && git pull origin main'",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api && pnpm i'",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api && rm -r ./.next/'",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api && aws s3 sync s3://media.dirtx.io/tmp/.next ./.next'",
+      "runuser -l ubuntu -c 'cd /home/ubuntu/ticketing_api &&  pm2 restart live'"
+    ]
+  }
+}
