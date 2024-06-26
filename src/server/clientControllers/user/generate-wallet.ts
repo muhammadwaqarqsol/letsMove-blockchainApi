@@ -1,6 +1,8 @@
 import { verifyJWT } from '~/utils/jwt';
 import { createSmartAccount } from '../web3-controller/createAccount';
-export async function getUserWallet(req: any, res: any) {
+import rateLimitMiddleware from '~/middleware/rateLimiter';
+
+async function getUserWallet(req: any, res: any) {
   try {
     console.log('check', req?.body);
     const privatekey = req.body.decodePrivateKey;
@@ -19,3 +21,4 @@ export async function getUserWallet(req: any, res: any) {
     res.status(500).send({ message: err.message as string });
   }
 }
+export default rateLimitMiddleware(getUserWallet)

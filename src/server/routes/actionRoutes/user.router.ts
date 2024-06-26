@@ -1,4 +1,4 @@
-import { getUserWallet } from '~/server/clientControllers/user/generate-wallet';
+import  getUserWallet  from '~/server/clientControllers/user/generate-wallet';
 
 export default async function userRoutes(req: any, res: any) {
   const { method, query } = req;
