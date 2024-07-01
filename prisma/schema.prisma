@@ -1,12 +1,236 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["views"]
+model alembic_version {
+  version_num String @id(map: "alembic_version_pkc") @db.VarChar(32)
+}
+
+model client {
+  id             Int       @id @default(autoincrement())
+  wallet_address String?   @db.VarChar
+  first_name     String    @db.VarChar
+  last_name      String    @db.VarChar
+  mobile_number  String?   @db.VarChar
+  client_since   DateTime  @db.Date
+  notes          String?   @db.VarChar
+  language       String?   @db.VarChar
+  is_business    Boolean?
+  business_id    Int?
+  city           String?   @db.VarChar
+  is_deleted     Boolean?
+  own_member_id  String    @db.VarChar
+  profile_img    String?   @db.VarChar(150)
+  gender         String?   @db.VarChar(10)
+  dob            DateTime  @db.Date
+  phone          String?   @db.VarChar(11)
+  zipcode        String?   @db.VarChar(10)
+  address_1      String?   @db.VarChar(100)
+  address_2      String?   @db.VarChar(100)
+  activated_on   DateTime? @db.Date
+  check_in       DateTime? @db.Timestamp(6)
+  last_online    DateTime? @db.Timestamp(6)
+  created_at     DateTime? @db.Timestamp(6)
+  updated_at     DateTime? @db.Timestamp(6)
+  created_by     Int?
+  updated_by     Int?
+  source_id      Int?
+  country_id     Int?
+  email          String    @unique @db.VarChar
+
+  @@index([id], map: "ix_client_id")
+}
+
+model client_coach {
+  id         Int      @id @default(autoincrement())
+  client_id  Int?
+  coach_id   Int?
+  is_deleted Boolean?
+
+  @@index([id], map: "ix_client_coach_id")
+}
+
+model client_membership {
+  id                 Int      @id @default(autoincrement())
+  client_id          Int?
+  membership_plan_id Int?
+  is_deleted         Boolean?
+
+  @@index([id], map: "ix_client_membership_id")
+}
+
+model client_organization {
+  id            Int      @id @default(autoincrement())
+  client_id     Int?
+  org_id        Int?
+  is_deleted    Boolean?
+  client_status String?  @db.VarChar(100)
+
+  @@index([id], map: "ix_client_organization_id")
+}
+
+model coach {
+  id         Int      @id @default(autoincrement())
+  coach_name String?  @db.VarChar
+  is_deleted Boolean?
+
+  @@index([id], map: "ix_coach_id")
+}
+
+model coach_organization {
+  id         Int      @id @default(autoincrement())
+  coach_id   Int?
+  org_id     Int?
+  is_deleted Boolean?
+
+  @@index([id], map: "ix_coach_organization_id")
+}
+
+model country {
+  id           Int      @id @default(autoincrement())
+  country      String?  @db.VarChar
+  country_code Int?
+  is_deleted   Boolean?
+
+  @@index([id], map: "ix_country_id")
+}
+
+model events {
+  id           Int             @id @default(autoincrement())
+  activity     String          @db.VarChar(100)
+  org_id       Int?
+  coach_id     Int?
+  description  String?
+  recurrency   recurrencyenum?
+  link         String?         @db.VarChar(50)
+  notes        String?
+  credit_type  String?         @db.VarChar(50)
+  start_time   DateTime        @db.Timestamp(6)
+  end_time     DateTime        @db.Timestamp(6)
+  created_at   DateTime?       @default(now()) @db.Timestamp(6)
+  created_by   Int
+  status       statusenum
+  is_deleted   Boolean?
+  participants String?         @db.VarChar(100)
+  updated_at   DateTime?       @default(now()) @db.Timestamp(6)
+  updated_by   Int?
+
+  @@index([id], map: "ix_events_id")
+}
+
+model leads {
+  id         Int       @id @default(autoincrement())
+  first_name String?   @db.VarChar
+  last_name  String?   @db.VarChar
+  email      String?   @db.VarChar
+  mobile     String?   @db.VarChar
+  phone      String?   @db.VarChar
+  staff_id   Int?
+  status     String?   @db.VarChar
+  source_id  Int?
+  lead_since DateTime? @db.Date
+  notes      String?   @db.VarChar
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  created_by Int?
+  updated_by Int?
+  is_deleted Boolean?
+  org_id     Int?
+
+  @@index([id], map: "ix_leads_id")
+}
+
+model membership_plan {
+  id         Int       @id @default(autoincrement())
+  name       String?   @db.VarChar
+  price      String?   @db.VarChar
+  org_id     Int?
+  is_deleted Boolean?
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  created_by Int?
+  updated_by Int?
+
+  @@index([id], map: "ix_membership_plan_id")
+}
+
+model organization {
+  id         Int      @id @default(autoincrement())
+  org_name   String   @db.VarChar
+  is_deleted Boolean?
+
+  @@index([id], map: "ix_organization_id")
+}
+
+model source {
+  id     Int     @id @default(autoincrement())
+  source String? @db.VarChar
+
+  @@index([id], map: "ix_source_id")
+}
+
+model staff {
+  id         Int       @id @default(autoincrement())
+  username   String?   @db.VarChar
+  password   String?   @db.VarChar
+  email      String?   @unique(map: "ix_staff_email") @db.VarChar
+  org_id     Int?
+  is_deleted Boolean?
+  name       String?   @db.VarChar
+  gender     String?   @db.VarChar
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  created_by Int?
+  updated_by Int?
+
+  @@index([id], map: "ix_staff_id")
+  @@index([org_id], map: "ix_staff_org_id")
+}
+
+model user_membership {
+  id                 Int       @id @default(autoincrement())
+  user_id            Int?
+  membership_plan_id Int?
+  start_date         DateTime? @db.Date
+  end_date           DateTime? @db.Date
+  is_deleted         Boolean?
+
+  @@index([id], map: "ix_user_membership_id")
+}
+
+enum recurrencyenum {
+  daily
+  weekly
+  yearly
+  monthly
+}
+
+enum statusenum {
+  pending
+  inprogress
+  completed
+}
+
+model transaction {
+  id         Int       @id @default(autoincrement())
+  transaction_hash       String?   @unique @db.VarChar
+  from      String?   @db.VarChar
+  to     String?   @db.VarChar
+  value   String? @db.VarChar
+  event_type  String?   @db.VarChar
+  status  TransactionEnums @default(pending)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+}
+
+enum TransactionEnums {
+  pending
+  success
+  failed
 }

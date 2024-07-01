@@ -171,3 +171,18 @@ export function stringToBoolean(str: string) {
   // Convert string to lowercase and check if it's 'true'
   return str.toLowerCase() === 'true';
 }
+
+export async function getUserData(req: any, res: any) {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ error: 'Authorization header missing' });
+  }
+  const [bearer, token] = req.headers.authorization.split(' ');
+  console.log('BEarer : ', bearer);
+  console.log('TOken: ', token);
+  // Check if the authorization scheme is Bearer and if the token exists
+  if (bearer !== 'Bearer' || !token) {
+    return res.status(401).json({ error: 'Invalid authorization format' });
+  }
+  const userData = await verifyJWT(token);
+  return userData;
+}
