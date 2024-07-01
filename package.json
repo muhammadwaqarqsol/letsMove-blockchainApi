@@ -3,6 +3,7 @@
   "version": "10.17.0",
   "private": true,
   "scripts": {
+    "generate": "prisma generate",
     "prisma-studio": "prisma studio",
     "db-seed": "prisma db seed",
     "db-reset": "prisma migrate-dev reset",
