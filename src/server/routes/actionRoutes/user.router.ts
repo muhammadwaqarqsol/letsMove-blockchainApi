@@ -3,11 +3,11 @@ import userTransferToken from '~/server/clientControllers/user/transfer-token';
 import { getUserData } from '~/utils/helper';
 
 export default async function userRoutes(req: any, res: any) {
-  const userData = await getUserData(req, res);
-  console.log('USERDATA : ', userData);
-  if (!userData) {
-    return res.status(401).json({ error: 'Invalid token' });
-  }
+  // const userData = await getUserData(req, res);
+  // console.log('USERDATA : ', userData);
+  // if (!userData) {
+  //   return res.status(401).json({ error: 'Invalid token' });
+  // }
 
   const { method, query } = req;
 
