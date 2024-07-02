@@ -47,3 +47,5 @@ package-lock.json
 
 # testing
 playwright/test-results
+
+Dockerfile
